@@ -331,7 +331,7 @@ function parseCards() {
 
       $toggle_button.click(cardToggle);
 
-      let $card_discard = $(this).find('.card__discard-button, .buttonlet-delete');
+      let $card_discard = $(this).find('.card__discard-button, .buttonlet-container');
 
       const ffCardFaveClass = isFirefox ? 'firefox_card_fave' : '';
       const ffCardAvoidClass = isFirefox ? 'firefox_card_avoid' : '';
@@ -352,13 +352,15 @@ function parseCards() {
           $(this).find(".card__discard-button").last().removeClass("button--disabled");
           $(this).find(".button--margin").last().addClass("pf-disabled");
           $(this).find(".hand__card").last().addClass("pf-disabled");
-          $(this).find(".buttonlet-delete").last().removeClass("pf-disabled");
+          $(this).find(".buttonlet-container").last().removeClass("pf-disabled");
+		  $(this).find(".buttonlet-container").last().removeClass("button--disabled");
         } else {
           $(this).find(".card__discard-button").last().removeClass("pf-disabled");
           $(this).find(".card__discard-button").last().removeClass("button--disabled");
           $(this).find(".button--margin").last().removeClass("pf-disabled");
           $(this).find(".hand__card").last().removeClass("pf-disabled");
-          $(this).find(".buttonlet-delete").last().addClass("pf-disabled");
+          $(this).find(".buttonlet-container").last().addClass("pf-disabled");
+		  $(this).find(".buttonlet-container").last().addClass("button--disabled");
         }
       } else if (card_faves.has(cardId)) {
         $(this).addClass("card_fave");
@@ -373,13 +375,15 @@ function parseCards() {
           $(this).find(".card__discard-button").last().addClass("button--disabled");
           $(this).find(".button--margin").last().removeClass("pf-disabled");
           $(this).find(".hand__card").last().removeClass("pf-disabled");
-          $(this).find(".buttonlet-delete").last().addClass("pf-disabled");
+          $(this).find(".buttonlet-container").last().addClass("pf-disabled");
+		  $(this).find(".buttonlet-container").last().addClass("button--disabled");
         } else {
           $(this).find(".card__discard-button").last().removeClass("pf-disabled");
           $(this).find(".card__discard-button").last().removeClass("button--disabled");
           $(this).find(".button--margin").last().addClass("pf-disabled");
           $(this).find(".hand__card").last().removeClass("pf-disabled");
-          $(this).find(".buttonlet-delete").last().removeClass("pf-disabled");
+          $(this).find(".buttonlet-container").last().removeClass("pf-disabled");
+		  $(this).find(".buttonlet-container").last().removeClass("button--disabled");
         }
       } else {
         $(this).removeClass("card_fave");
@@ -393,7 +397,8 @@ function parseCards() {
         $(this).find(".card__discard-button").last().removeClass("button--disabled");
         $(this).find(".button--margin").last().removeClass("pf-disabled");
         $(this).find(".hand__card").last().removeClass("pf-disabled");
-        $(this).find(".buttonlet-delete").last().removeClass("pf-disabled");
+        $(this).find(".buttonlet-container").last().removeClass("pf-disabled");
+		$(this).find(".buttonlet-container").last().removeClass("button--disabled");
       }
     }
   });
