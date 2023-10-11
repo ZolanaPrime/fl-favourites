@@ -2,8 +2,11 @@
 
 Forked from [gasovn](https://github.com/gasovn/fl_favourites/) (in turn forked from [kav2k](https://github.com/kav2k/fl_favourites))
 
-v0.5.3 changes:
+# Version 0.5.4:
 
-Fixed being able to discard protected cards on mobile (/src/js/content.js)
+* Fixed Fifth City Stories not being toggleable
 
-Changed icons from rosettes to Neathy lampposts, and colour scheme from green/red to gold/silver (/src/img/ and /src/css/content.css)
+# Version 0.5.3:
+
+* Fixed protected cards being discardable on mobile
+* Changed icons and colour scheme from green/red rosettes to Neathy gold/silver lampposts

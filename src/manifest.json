@@ -5,7 +5,7 @@
   "short_name": "Fallen London Favourites",
   "description": "Fork of an unofficial Fallen London extension to quickly choose favourite branches",
 
-  "version": "0.5.3",
+  "version": "0.5.4",
 
   "icons": {
     "16" : "img/icon16.png",

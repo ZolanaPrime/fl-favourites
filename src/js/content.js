@@ -51,12 +51,14 @@ async function registerObserver() {
     callback: function(summaries) {
       fillClickHandlers();
       parseStorylets(true);
-      parseCards();
+      parseFCStorylets(true);
+	  parseCards();
     },
     queries: [{ attribute: "data-branch-id" }, { attribute: "data-event-id" }, { attribute: "disabled"}]
   });
   fillClickHandlers();
   parseStorylets(true);
+  parseFCStorylets(true);
   parseCards();
 }
 
@@ -300,6 +302,212 @@ function parseStorylets(reorder = false) { // Call without options to ensure no 
   $(".first_reorder_marker, .last_active_reorder_marker, .last_reorder_marker").remove();
 }
 
+// Fix for Fifth City Stories not being toggleable
+
+function parseFCStorylets(reorder = false) { // Call without options to ensure no reordering
+  let $container = $("#main");
+  let $branches = $("#main .media--branch");
+  let $storylets = $("#main .persistent");
+
+  let reorder_active = false;
+  let reorder_locked = false;
+  if (reorder) {
+    switch (options.branch_reorder_mode) {
+      case "branch_no_reorder":
+        break;
+      case "branch_reorder_active":
+        reorder_active = true;
+        break;
+      case "branch_reorder_all":
+        reorder_active = true;
+        reorder_locked = true;
+        break;
+    }
+  }
+
+  let $faves;
+  let $avoids;
+
+  let $first;
+  let $last_active;
+  let $last;
+
+  if ($branches.length) {
+    $branches.each(function() {
+      let match = this.dataset.branchId;
+      if (match) {
+        const branchId = parseInt(match);
+        const active = $(this).hasClass("media--locked");
+
+        $(this).find(".fave_toggle_button").remove();
+
+        if ($(this).find(".button--go").prop("offsetParent") === null) { return; } // Fix for Protector extensions
+
+        let $toggle_button = $('<input type="image" class="fave_toggle_button" title="Playing Favourites: toggle favourite">');
+        $toggle_button.insertAfter($(this).find(".button--go").last()); // In case of insufficient actions, there are 2 buttons
+        $toggle_button.attr("data-active", active);
+        $toggle_button.attr("data-toggle-id", branchId);
+        $toggle_button.click(branchToggle);
+
+        if (branch_faves.has(branchId)) {
+          $(this).addClass("storylet_favourite");
+          $(this).removeClass("storylet_avoid");
+          $toggle_button.attr("src", chrome.runtime.getURL("img/button_filled.png"));
+
+          if (options.block_action) {
+            $(this).find(".button--go").last().removeClass("pf-disabled");
+            $(this).find(".button--go").last().removeClass("button--disabled");
+          } else {
+            $(this).find(".button--go").last().removeClass("pf-disabled");
+            $(this).find(".button--go").last().removeClass("button--disabled");
+          }
+        } else if (branch_avoids.has(branchId)) {
+          $(this).removeClass("storylet_favourite");
+          $(this).addClass("storylet_avoid");
+          $toggle_button.attr("src", chrome.runtime.getURL("img/button_avoid.png"));
+
+          if (options.block_action) {
+            $(this).find(".button--go").last().addClass("pf-disabled");
+            $(this).find(".button--go").last().addClass("button--disabled");
+          } else {
+            $(this).find(".button--go").last().removeClass("pf-disabled");
+            $(this).find(".button--go").last().removeClass("button--disabled");
+          }
+        } else {
+          $(this).removeClass("storylet_favourite");
+          $(this).removeClass("storylet_avoid");
+          $toggle_button.attr("src", chrome.runtime.getURL("img/button_empty.png"));
+
+          if (options.block_action) {
+            $(this).find(".button--go").last().removeClass("pf-disabled");
+            $(this).find(".button--go").last().removeClass("button--disabled");
+          } else {
+            $(this).find(".button--go").last().removeClass("pf-disabled");
+            $(this).find(".button--go").last().removeClass("button--disabled");
+          }
+        }
+      }
+    });
+
+    $branches.first().before('<div class="first_reorder_marker">');
+    $first = $(".first_reorder_marker");
+
+    $branches.last().after('<div class="last_reorder_marker">');
+    $last = $(".last_reorder_marker");
+
+    if ($branches.not(".media--locked").last().length) {
+      $branches.not(".media--locked").last().after('<div class="last_active_reorder_marker">');
+      $last_active = $(".last_active_reorder_marker");
+    } else {
+      $last_active = $last;
+    }
+
+    $faves = $branches.filter(".storylet_favourite");
+    $avoids = $branches.filter(".storylet_avoid");
+  } else if ($storylets.length) {
+    $storylets.each(function() {
+      let match = this.dataset.branchId;
+
+      if (match) {
+        const storyletId = parseInt(match);
+        const active = $(this).hasClass("media--locked");
+
+        $(this).find(".fave_toggle_button").remove();
+
+        if ($(this).find(".button--go").prop("offsetParent") === null) { return; } // Fix for Protector extensions
+
+        let $toggle_button = $('<input type="image" class="fave_toggle_button" title="Playing Favourites: toggle favourite">');
+        $toggle_button.insertAfter($(this).find(".button--go"));
+        $toggle_button.attr("data-active", active);
+        $toggle_button.attr("data-toggle-id", storyletId);
+        $toggle_button.click(storyletToggle);
+
+        if (storylet_faves.has(storyletId)) {
+          $(this).addClass("storylet_favourite");
+          $(this).removeClass("storylet_avoid");
+          $toggle_button.attr("src", chrome.runtime.getURL("img/button_filled.png"));
+
+          if (options.block_action) {
+            $(this).find(".button--go").last().removeClass("pf-disabled");
+            $(this).find(".button--go").last().removeClass("button--disabled");
+          } else {
+            $(this).find(".button--go").last().removeClass("pf-disabled");
+            $(this).find(".button--go").last().removeClass("button--disabled");
+          }
+        } else if (storylet_avoids.has(storyletId)) {
+          $(this).removeClass("storylet_favourite");
+          $(this).addClass("storylet_avoid");
+          $toggle_button.attr("src", chrome.runtime.getURL("img/button_avoid.png"));
+
+          if (options.block_action) {
+            $(this).find(".button--go").last().addClass("pf-disabled");
+            $(this).find(".button--go").last().addClass("button--disabled");
+          } else {
+            $(this).find(".button--go").last().removeClass("pf-disabled");
+            $(this).find(".button--go").last().removeClass("button--disabled");
+          }
+        } else {
+          $(this).removeClass("storylet_favourite");
+          $(this).removeClass("storylet_avoid");
+          $toggle_button.attr("src", chrome.runtime.getURL("img/button_empty.png"));
+
+          if (options.block_action) {
+            $(this).find(".button--go").last().removeClass("pf-disabled");
+            $(this).find(".button--go").last().removeClass("button--disabled");
+          } else {
+            $(this).find(".button--go").last().removeClass("pf-disabled");
+            $(this).find(".button--go").last().removeClass("button--disabled");
+          }
+        }
+      }
+    });
+
+    $storylets.first().before('<div class="first_reorder_marker">');
+    $first = $(".first_reorder_marker");
+
+    $storylets.last().after('<div class="last_reorder_marker">');
+    $last = $(".last_reorder_marker");
+
+    if ($storylets.not(".media--locked").last().length) {
+      $storylets.not(".media--locked").last().after('<div class="last_active_reorder_marker">');
+      $last_active = $(".last_active_reorder_marker");
+    } else {
+      $last_active = $last;
+    }
+
+    $faves = $storylets.filter(".storylet_favourite");
+    $avoids = $storylets.filter(".storylet_avoid");
+  }
+
+  if ($faves && $faves.length) {
+    if (reorder_locked) {
+      $faves.filter(".media--locked").insertBefore($first);
+    }
+
+    if (reorder_active) {
+      $faves.not(".media--locked").insertBefore($first);
+    }
+  }
+
+  if ($avoids && $avoids.length) {
+    if (reorder_locked) {
+      $avoids.filter(".media--locked").insertAfter($last_active);
+    }
+
+    if (reorder_active) {
+      $avoids.not(".media--locked").insertAfter($last_active);
+    }
+  }
+
+  $(".first_reorder_marker, .last_active_reorder_marker, .last_reorder_marker").remove();
+}
+
+
+//###################################################################################################
+
+
+
+
 function parseCards() {
   const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 
@@ -408,6 +616,7 @@ async function onStorageChange(changes, area) {
   if (area === "local") {
     await loadData();
     parseStorylets();
+	parseFCStorylets()
     parseCards();
   }
 }
@@ -601,6 +810,7 @@ async function setBranchFave(branchId, mode) {
   }
   await saveFaves();
   parseStorylets();
+  parseFCStorylets();
 }
 
 async function setStoryletFave(storyletId, mode) {
@@ -620,6 +830,7 @@ async function setStoryletFave(storyletId, mode) {
   }
   await saveFaves();
   parseStorylets();
+  parseFCStorylets();
 }
 
 async function setCardFave(cardId, mode) {
