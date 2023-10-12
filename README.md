@@ -2,6 +2,10 @@
 
 Forked from [gasovn](https://github.com/gasovn/fl_favourites/) (in turn forked from [kav2k](https://github.com/kav2k/fl_favourites))
 
+# Version 0.5.5:
+
+* Version bump for Mozilla submission
+
 # Version 0.5.4:
 
 * Fixed Fifth City Stories not being toggleable
