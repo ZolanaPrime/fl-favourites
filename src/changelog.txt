@@ -1,3 +1,7 @@
+Version 0.5.6
+
+* Bug fix on mobile where if clicks were still allowed on "bad" cards, they were still blocked
+
 Version 0.5.5
 
 * Version bump for Mozilla submission

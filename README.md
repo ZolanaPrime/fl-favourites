@@ -1,6 +1,10 @@
-# Playing Favourites for Fallen London 
+# Playing Favourites for Fallen London on Firefox
 
 Forked from [gasovn](https://github.com/gasovn/fl_favourites/) (in turn forked from [kav2k](https://github.com/kav2k/fl_favourites))
+
+# Version 0.5.6:
+
+* Bug fix on mobile where if clicks were still allowed on "bad" cards, they were still blocked
 
 # Version 0.5.5:
 

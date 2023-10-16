@@ -555,7 +555,7 @@ function parseCards() {
         $card_discard.addClass('button_fave');
         $card_discard.removeClass('button_avoid');
 
-        if (options.block_action) {
+        if (options.block_action) { 
           $(this).find(".card__discard-button").last().removeClass("pf-disabled");
           $(this).find(".card__discard-button").last().removeClass("button--disabled");
           $(this).find(".button--margin").last().addClass("pf-disabled");
@@ -567,8 +567,8 @@ function parseCards() {
           $(this).find(".card__discard-button").last().removeClass("button--disabled");
           $(this).find(".button--margin").last().removeClass("pf-disabled");
           $(this).find(".hand__card").last().removeClass("pf-disabled");
-          $(this).find(".buttonlet-container").last().addClass("pf-disabled");
-		  $(this).find(".buttonlet-container").last().addClass("button--disabled");
+          $(this).find(".buttonlet-container").last().removeClass("pf-disabled");
+		  $(this).find(".buttonlet-container").last().removeClass("button--disabled");
         }
       } else if (card_faves.has(cardId)) {
         $(this).addClass("card_fave");
@@ -578,17 +578,17 @@ function parseCards() {
         $card_discard.removeClass('button_fave');
         $card_discard.addClass('button_avoid');
 
-        if (options.block_action) {
+        if (options.block_action) { 
           $(this).find(".card__discard-button").last().addClass("pf-disabled");
           $(this).find(".card__discard-button").last().addClass("button--disabled");
           $(this).find(".button--margin").last().removeClass("pf-disabled");
           $(this).find(".hand__card").last().removeClass("pf-disabled");
           $(this).find(".buttonlet-container").last().addClass("pf-disabled");
 		  $(this).find(".buttonlet-container").last().addClass("button--disabled");
-        } else {
+        } else { 
           $(this).find(".card__discard-button").last().removeClass("pf-disabled");
           $(this).find(".card__discard-button").last().removeClass("button--disabled");
-          $(this).find(".button--margin").last().addClass("pf-disabled");
+          $(this).find(".button--margin").last().removeClass("pf-disabled");
           $(this).find(".hand__card").last().removeClass("pf-disabled");
           $(this).find(".buttonlet-container").last().removeClass("pf-disabled");
 		  $(this).find(".buttonlet-container").last().removeClass("button--disabled");
