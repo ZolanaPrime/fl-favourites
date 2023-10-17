@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
 
-  "name": "Fallen London Favourites 1899",
-  "short_name": "Fallen London Favourites 1899",
+  "name": "Fallen London Favourites 1899 - Classic",
+  "short_name": "Fallen London Favourites 1899 - Classic",
   "description": "Fork of an unofficial Fallen London extension to quickly choose favourite branches",
 
   "version": "0.5.6",
